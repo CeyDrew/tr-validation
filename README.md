@@ -16,6 +16,23 @@ phone numbers, card numbers and postal codes.
 | `tr-validation-examples` | Example Spring Boot application (not published) |
 | `tr-validation-benchmarks` | JMH benchmarks (not published) |
 
+## Bean Validation
+
+```java
+record CustomerRequest(
+    @NotNull @Tckn(allowYkn = true) String identityNumber,
+    @TrIban String iban,
+    @TrPhone(mobileOnly = true) String gsm,
+    @TrPlate String plate,
+    @CardNumber(networks = {CardNetwork.VISA, CardNetwork.TROY}) String card) {}
+```
+
+Annotations are in `io.github.ceydrew.trvalidation.jakarta` (`tr-validation-jakarta`). `null` is valid,
+so add `@NotNull` where a value is required. Default messages come in English and Turkish
+(`must be a valid Turkish identity number` / `geçerli bir T.C. kimlik numarası olmalıdır`); override them
+in your `ValidationMessages.properties` with keys such as
+`io.github.ceydrew.trvalidation.jakarta.Tckn.message`. See [ADR 0002](docs/adr/0002-validation-message-bundles.md).
+
 ## Performance
 
 `validate(...)` scans the input once and returns cached result objects, so it does not allocate.
