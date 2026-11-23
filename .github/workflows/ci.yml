@@ -38,6 +38,7 @@ jobs:
         uses: codecov/codecov-action@v5
         with:
           files: tr-validation-core/target/site/jacoco/jacoco.xml,tr-validation-jakarta/target/site/jacoco/jacoco.xml,tr-validation-spring-boot-starter/target/site/jacoco/jacoco.xml
+          disable_search: true
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: false
 
