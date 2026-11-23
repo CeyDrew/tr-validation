@@ -1,0 +1,24 @@
+{
+  "groups": [
+    {
+      "name": "tr-validation",
+      "type": "io.github.ceydrew.trvalidation.spring.TrValidationProperties",
+      "sourceType": "io.github.ceydrew.trvalidation.spring.TrValidationProperties"
+    },
+    {
+      "name": "tr-validation.masking",
+      "type": "io.github.ceydrew.trvalidation.spring.TrValidationProperties$Masking",
+      "sourceType": "io.github.ceydrew.trvalidation.spring.TrValidationProperties",
+      "sourceMethod": "getMasking()"
+    }
+  ],
+  "properties": [
+    {
+      "name": "tr-validation.masking.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Whether @Masked properties and tr-validation value types are written masked in JSON.",
+      "sourceType": "io.github.ceydrew.trvalidation.spring.TrValidationProperties$Masking",
+      "defaultValue": true
+    }
+  ]
+}
