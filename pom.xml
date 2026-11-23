@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" child.project.url.inherit.append.path="false" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>io.github.ceydrew</groupId>
@@ -19,6 +19,14 @@
     </license>
   </licenses>
 
+  <developers>
+    <developer>
+      <id>CeyDrew</id>
+      <name>CeyDrew</name>
+      <url>https://github.com/CeyDrew</url>
+    </developer>
+  </developers>
+
   <modules>
     <module>tr-validation-bom</module>
     <module>tr-validation-core</module>
@@ -28,6 +36,18 @@
     <module>tr-validation-benchmarks</module>
     <module>tr-validation-boot3-tests</module>
   </modules>
+
+  <scm child.scm.connection.inherit.append.path="false" child.scm.developerConnection.inherit.append.path="false" child.scm.url.inherit.append.path="false">
+    <connection>scm:git:https://github.com/CeyDrew/tr-validation.git</connection>
+    <developerConnection>scm:git:git@github.com:CeyDrew/tr-validation.git</developerConnection>
+    <tag>HEAD</tag>
+    <url>https://github.com/CeyDrew/tr-validation</url>
+  </scm>
+
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/CeyDrew/tr-validation/issues</url>
+  </issueManagement>
 
   <properties>
     <maven.compiler.release>17</maven.compiler.release>
@@ -47,6 +67,11 @@
     <maven-clean-plugin.version>3.4.0</maven-clean-plugin.version>
     <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
     <maven-javadoc-plugin.version>3.11.2</maven-javadoc-plugin.version>
+    <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
+    <maven-gpg-plugin.version>3.2.8</maven-gpg-plugin.version>
+    <central-publishing-maven-plugin.version>0.12.0</central-publishing-maven-plugin.version>
+    <!-- false: the deployment waits in the Central Portal until published by hand -->
+    <central.autoPublish>false</central.autoPublish>
     <spotless-maven-plugin.version>2.43.0</spotless-maven-plugin.version>
     <google-java-format.version>1.24.0</google-java-format.version>
   </properties>
@@ -219,4 +244,78 @@
     </plugins>
   </build>
 
+  <profiles>
+    <!--
+      Signed release to Maven Central, run by .github/workflows/release.yml:
+        ./mvnw -P release deploy -pl tr-validation-bom,tr-validation-core,tr-validation-jakarta,tr-validation-spring-boot-starter -am
+      Credentials come from the "central" server in settings.xml and MAVEN_GPG_PASSPHRASE.
+    -->
+    <profile>
+      <id>release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <version>${maven-source-plugin.version}</version>
+            <executions>
+              <execution>
+                <id>attach-sources</id>
+                <goals>
+                  <goal>jar-no-fork</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>${maven-gpg-plugin.version}</version>
+            <configuration>
+              <!-- passphrase from MAVEN_GPG_PASSPHRASE, never from the command line or POM -->
+              <bestPractices>true</bestPractices>
+            </configuration>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+                <phase>verify</phase>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.sonatype.central</groupId>
+            <artifactId>central-publishing-maven-plugin</artifactId>
+            <version>${central-publishing-maven-plugin.version}</version>
+            <extensions>true</extensions>
+            <configuration>
+              <publishingServerId>central</publishingServerId>
+              <autoPublish>${central.autoPublish}</autoPublish>
+              <waitUntil>validated</waitUntil>
+              <deploymentName>tr-validation ${project.version}</deploymentName>
+              <excludeArtifacts>
+                <artifact>tr-validation-examples</artifact>
+                <artifact>tr-validation-benchmarks</artifact>
+                <artifact>tr-validation-boot3-tests</artifact>
+              </excludeArtifacts>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

@@ -20,6 +20,21 @@
     </license>
   </licenses>
 
+  <developers>
+    <developer>
+      <id>CeyDrew</id>
+      <name>CeyDrew</name>
+      <url>https://github.com/CeyDrew</url>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:git:https://github.com/CeyDrew/tr-validation.git</connection>
+    <developerConnection>scm:git:git@github.com:CeyDrew/tr-validation.git</developerConnection>
+    <tag>HEAD</tag>
+    <url>https://github.com/CeyDrew/tr-validation</url>
+  </scm>
+
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -66,4 +81,42 @@
       </plugin>
     </plugins>
   </build>
+  <profiles>
+    <!-- same as the parent's release profile; the BOM does not inherit it -->
+    <profile>
+      <id>release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>3.2.8</version>
+            <configuration>
+              <bestPractices>true</bestPractices>
+            </configuration>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+                <phase>verify</phase>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.sonatype.central</groupId>
+            <artifactId>central-publishing-maven-plugin</artifactId>
+            <version>0.12.0</version>
+            <extensions>true</extensions>
+            <configuration>
+              <publishingServerId>central</publishingServerId>
+              <autoPublish>false</autoPublish>
+              <waitUntil>validated</waitUntil>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

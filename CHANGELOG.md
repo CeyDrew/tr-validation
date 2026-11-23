@@ -7,35 +7,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+First release.
+
 ### Added
 
-- Core API (`io.github.ceydrew.trvalidation`): `Tckn`, `Ykn`, `Vkn` with `isValid`, `validate`,
-  `normalize`, `mask`, `of`, `parse`, `random`, `value`, `masked`; masked `toString()`.
-- `ValidationResult` (sealed: `Valid` / `Invalid`), `InvalidReason`, `InvalidValueException`
-  (message never contains the rejected value).
-- ADR 0001 on the public API style.
-- `Iban` (any SWIFT-registered country, plus `validateTr`/`isValidTr`, `format`, `bankCode`,
-  `randomTr`), `CardNumber` with `CardNetwork` (Visa, Mastercard, Amex, Troy), `PhoneNumber` with
-  `PhoneType` (E.164 normalization), `LicensePlate`, `PostalCode`.
-- `InvalidReason` constants `INVALID_COUNTRY_CODE`, `INVALID_PROVINCE_CODE`, `INVALID_FORMAT`.
-- `tr-validation-benchmarks`: JMH benchmarks (not published).
-- Jakarta module (`io.github.ceydrew.trvalidation.jakarta`): `@Tckn(allowYkn)`, `@Ykn`, `@Vkn`,
+#### `tr-validation-core` (no dependencies)
+
+- Validators and value types in `io.github.ceydrew.trvalidation`: `Tckn`, `Ykn`, `Vkn`, `Iban`,
+  `CardNumber`, `PhoneNumber`, `LicensePlate`, `PostalCode`. Each offers `isValid`, `validate`,
+  `normalize`, `mask`, `of`, `parse` and (except `PhoneNumber`) `random` for test data; instances expose
+  `value()` and `masked()` and print masked in `toString()` (ADR 0001).
+- `Iban`: any SWIFT-registered country, plus `validateTr`/`isValidTr`, `format`, `bankCode` and
+  `randomTr`.
+- `CardNumber`: Luhn, network detection with `CardNetwork` (Visa, Mastercard, American Express, Troy).
+- `PhoneNumber`: Turkish numbers in any common notation, E.164 normalization, `PhoneType`.
+- `ValidationResult` (sealed `Valid` / `Invalid`), `InvalidReason`, and `InvalidValueException`, whose
+  message never contains the rejected value.
+- Allocation-free `validate(...)` (JMH results in the README).
+
+#### `tr-validation-jakarta`
+
+- Constraints in `io.github.ceydrew.trvalidation.jakarta`: `@Tckn(allowYkn)`, `@Ykn`, `@Vkn`,
   `@TrIban(allowForeign)`, `@TrPlate`, `@TrPhone(mobileOnly)`, `@CardNumber(networks)`,
-  `@TrPostalCode`; `null` is valid. English and Turkish messages in `ContributorValidationMessages`
-  bundles (ADR 0002).
-- Spring Boot starter: `TrValidationAutoConfiguration`, `TrValidationProperties`
-  (`tr-validation.masking.enabled`), `@Masked` with `MaskType`, `TrValidationJacksonModule` (Jackson 3)
-  and `TrValidationJackson2Module` (Jackson 2) that mask annotated properties and read/write core
-  value types.
-- `tr-validation-examples`: insurance customer registration API (not published).
-- `tr-validation-boot3-tests`: runs the starter on Spring Boot 3.5 with Jackson 2 (not published).
-- GitHub Actions CI (Java 17 and 21, Spotless, coverage, strict Javadoc), Codecov upload, Dependabot.
-- README: installation (Maven, Gradle, BOM), examples for every identifier, KVKK notes,
-  compatibility table. ADR 0003 on Spring Boot 3 and 4 support.
+  `@TrPostalCode`; `null` is valid.
+- English and Turkish messages as Hibernate Validator contributor bundles (ADR 0002).
 
-### Fixed
+#### `tr-validation-spring-boot-starter`
 
-- Javadoc failed on Windows because of a raw no-break space in the source; separators are now written
-  as explicit character codes.
-- Multi-module Maven build (`core`, `jakarta`, `spring-boot-starter`, `examples`, `bom`) with Maven Wrapper.
-- Java 17 baseline, JaCoCo coverage and Spotless (google-java-format) in the parent POM.
+- Auto-configuration for Spring Boot 3 and 4 (ADR 0003); `tr-validation.masking.enabled`.
+- `@Masked` with `MaskType` for JSON masking; `TrValidationJacksonModule` (Jackson 3) and
+  `TrValidationJackson2Module` (Jackson 2) also read and write the core value types.
+
+#### `tr-validation-bom`
+
+- Bill of materials for the modules above.
