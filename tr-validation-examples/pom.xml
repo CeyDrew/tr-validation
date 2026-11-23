@@ -15,6 +15,7 @@
 
   <properties>
     <maven.deploy.skip>true</maven.deploy.skip>
+    <maven.javadoc.skip>true</maven.javadoc.skip>
     <spring-boot.version>4.2.0</spring-boot.version>
   </properties>
 
