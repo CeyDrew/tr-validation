@@ -25,6 +25,7 @@
     <module>tr-validation-jakarta</module>
     <module>tr-validation-spring-boot-starter</module>
     <module>tr-validation-examples</module>
+    <module>tr-validation-benchmarks</module>
   </modules>
 
   <properties>
