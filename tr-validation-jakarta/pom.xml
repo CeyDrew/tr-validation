@@ -15,7 +15,7 @@
 
   <properties>
     <jakarta-validation.version>3.0.2</jakarta-validation.version>
-    <hibernate-validator.version>8.0.1.Final</hibernate-validator.version>
+    <hibernate-validator.version>8.0.6.Final</hibernate-validator.version>
     <expressly.version>5.0.0</expressly.version>
   </properties>
 
