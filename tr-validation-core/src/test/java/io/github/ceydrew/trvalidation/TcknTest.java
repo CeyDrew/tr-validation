@@ -12,6 +12,9 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 class TcknTest {
 
+  private static final char NBSP = (char) 0xA0;
+  private static final char ARABIC_INDIC_ONE = (char) 0x0661;
+
   @ParameterizedTest
   @ValueSource(
       strings = {
@@ -35,7 +38,7 @@ class TcknTest {
         " 10000000146 ",
         "\t10000000146\n",
         "10000000146\r\n",
-        "100 000 00146"
+        "100" + NBSP + "000" + NBSP + "00146"
       })
   void ignoresSeparators(String input) {
     assertThat(Tckn.isValid(input)).isTrue();
@@ -55,7 +58,7 @@ class TcknTest {
     "1000000014a, INVALID_CHARACTER",
     "+10000000146, INVALID_CHARACTER",
     // Arabic-Indic digit one; Character.isDigit would accept it
-    "١000000014, INVALID_CHARACTER",
+    ARABIC_INDIC_ONE + "000000014, INVALID_CHARACTER",
     "123456789012345x, INVALID_CHARACTER",
     "1, WRONG_LENGTH",
     "1000000014, WRONG_LENGTH",

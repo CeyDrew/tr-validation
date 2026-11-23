@@ -103,7 +103,8 @@ class CardNumberTest {
 
   @Test
   void normalize() {
-    assertThat(CardNumber.normalize("4111-1111 1111 1111")).isEqualTo("4111111111111111");
+    assertThat(CardNumber.normalize("4111-1111 1111" + (char) 0xA0 + "1111"))
+        .isEqualTo("4111111111111111");
     assertThat(CardNumber.normalize(null)).isNull();
   }
 
