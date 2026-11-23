@@ -19,5 +19,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `PhoneType` (E.164 normalization), `LicensePlate`, `PostalCode`.
 - `InvalidReason` constants `INVALID_COUNTRY_CODE`, `INVALID_PROVINCE_CODE`, `INVALID_FORMAT`.
 - `tr-validation-benchmarks`: JMH benchmarks (not published).
+- Jakarta module (`io.github.ceydrew.trvalidation.jakarta`): `@Tckn(allowYkn)`, `@Ykn`, `@Vkn`,
+  `@TrIban(allowForeign)`, `@TrPlate`, `@TrPhone(mobileOnly)`, `@CardNumber(networks)`,
+  `@TrPostalCode`; `null` is valid. English and Turkish messages in `ContributorValidationMessages`
+  bundles (ADR 0002).
 - Multi-module Maven build (`core`, `jakarta`, `spring-boot-starter`, `examples`, `bom`) with Maven Wrapper.
 - Java 17 baseline, JaCoCo coverage and Spotless (google-java-format) in the parent POM.
