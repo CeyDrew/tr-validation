@@ -24,3 +24,6 @@ Thumbs.db
 *.key
 .env
 settings-security.xml
+
+# jqwik
+.jqwik-database
