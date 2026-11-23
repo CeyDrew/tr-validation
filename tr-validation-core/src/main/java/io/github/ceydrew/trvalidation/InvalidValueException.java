@@ -19,7 +19,10 @@ public final class InvalidValueException extends IllegalArgumentException {
 
   private static final long serialVersionUID = 1L;
 
+  /** Short name of the rejected type, e.g. {@code "TCKN"}. */
   private final String type;
+
+  /** Why the value was rejected. */
   private final InvalidReason reason;
 
   InvalidValueException(String type, InvalidReason reason) {

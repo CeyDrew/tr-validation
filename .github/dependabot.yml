@@ -1,0 +1,26 @@
+version: 2
+updates:
+  - package-ecosystem: maven
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 10
+    groups:
+      test-dependencies:
+        patterns: ['org.junit*', 'org.assertj*', 'net.jqwik*']
+      maven-plugins:
+        patterns: ['org.apache.maven.plugins*', 'org.jacoco*', 'com.diffplug.spotless*']
+    ignore:
+      # tr-validation-boot3-tests must stay on Spring Boot 3, the starter on Spring Boot 4
+      - dependency-name: org.springframework.boot:spring-boot-dependencies
+        update-types: ['version-update:semver-major']
+      # the Jakarta module targets Jakarta Validation 3.x (Spring Boot 3 and 4)
+      - dependency-name: jakarta.validation:jakarta.validation-api
+        update-types: ['version-update:semver-major']
+      - dependency-name: org.hibernate.validator:hibernate-validator
+        update-types: ['version-update:semver-major']
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly

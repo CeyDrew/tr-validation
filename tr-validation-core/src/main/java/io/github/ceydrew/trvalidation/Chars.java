@@ -7,7 +7,7 @@ final class Chars {
 
   /** Separators ignored anywhere in lenient input: whitespace, no-break space and hyphen. */
   static boolean isSeparator(char c) {
-    return c == ' ' || c == '-' || c == '\t' || c == ' ' || c == '\n' || c == '\r';
+    return c == ' ' || c == '-' || c == '\t' || c == (char) 0xA0 || c == '\n' || c == '\r';
   }
 
   /** ASCII digits only; Unicode digits such as Arabic-Indic numerals are rejected. */
